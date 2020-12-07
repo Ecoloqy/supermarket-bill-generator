@@ -24,7 +24,7 @@ public class Main {
             List<Promotion> promotions = filesReader.readPromotions(promotionsFile);
             List<Product> products = filesReader.readProducts(promotionsFile, receiptFile);
             BigDecimal result = billGenerator.generate(products, promotions);
-            System.out.println("The total cost of purchases: " + result.toString());
+            System.out.println("The total cost of purchases: " + result.toString() + " EUR");
         } catch (InvalidOperationException | URISyntaxException e) {
             e.printStackTrace();
         }
