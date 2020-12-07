@@ -1,5 +1,7 @@
 package com.supermarket;
 
+import java.util.Objects;
+
 public class Product {
     private final int barcode;
     private final String name;
@@ -21,5 +23,18 @@ public class Product {
 
     public int getQuantity() {
         return quantity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return barcode == product.barcode && quantity == product.quantity && Objects.equals(name, product.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(barcode, name, quantity);
     }
 }

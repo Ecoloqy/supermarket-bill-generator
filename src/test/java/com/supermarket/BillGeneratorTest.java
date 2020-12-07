@@ -26,12 +26,12 @@ public class BillGeneratorTest {
         );
 
         promotions = Arrays.asList(
-                new Promotion(0, 1001, 1, 1.20),
-                new Promotion(1, 1001, 2, 2.00),
-                new Promotion(2, 1244, 1, 0.20),
-                new Promotion(3, 1244, 10, 1.90),
-                new Promotion(4, 1016, 1, 2.20),
-                new Promotion(5, 1016, 2, 4.00)
+                new Promotion(0, 1001, "Beer", 1, 1.20),
+                new Promotion(1, 1001, "Beer",2, 2.00),
+                new Promotion(2, 1244, "Egg", 1, 0.20),
+                new Promotion(3, 1244, "Egg", 10, 1.90),
+                new Promotion(4, 1016, "Milk", 1, 2.20),
+                new Promotion(5, 1016, "Milk", 2, 4.00)
         );
     }
 
