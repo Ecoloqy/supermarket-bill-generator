@@ -29,6 +29,13 @@ public class Product {
         this.quantity = quantity;
     }
 
+    /**
+     * equals and hashCode only necessary for tests
+     * I search for assertIterable without need to sort but I can't find it
+     *   so I decide to sort lists by hashCode in tests
+     * there is no need to sort objects in valid working BillGenerator itself
+     **/
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
