@@ -2,11 +2,11 @@ package com.supermarket;
 
 import com.supermarket.background.FilesReader;
 import com.supermarket.handlers.InvalidOperationException;
+import com.supermarket.models.Product;
+import com.supermarket.models.Promotion;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;

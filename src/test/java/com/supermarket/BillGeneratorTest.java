@@ -1,6 +1,8 @@
 package com.supermarket;
 
 import com.supermarket.handlers.InvalidOperationException;
+import com.supermarket.models.Product;
+import com.supermarket.models.Promotion;
 import org.junit.Test;
 import org.junit.jupiter.api.function.Executable;
 

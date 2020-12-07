@@ -1,7 +1,7 @@
 package com.supermarket.background;
 
-import com.supermarket.Product;
-import com.supermarket.Promotion;
+import com.supermarket.models.Product;
+import com.supermarket.models.Promotion;
 import com.supermarket.handlers.InvalidOperationException;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
