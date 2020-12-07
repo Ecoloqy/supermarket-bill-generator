@@ -6,12 +6,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.function.Executable;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BillGeneratorTest {
+public class BillGeneratorTest {
 
     private static List<Product> products;
     private static List<Promotion> promotions;
@@ -45,7 +46,7 @@ class BillGeneratorTest {
     }
 
     @Test
-    public void when_generateWithEmptyPromotionsValues_should_throwIllegalArgumentException() {
+    public void when_generateWithNoPromotionsValues_should_throwIllegalArgumentException() {
         BillGenerator billGenerator = new BillGenerator();
 
         Executable executable = () -> billGenerator.generate(products, null);
@@ -54,10 +55,21 @@ class BillGeneratorTest {
     }
 
     @Test
-    public void when_generateWithEmptyProductsValues_should_throwIllegalArgumentException() {
+    public void when_generateWithNoProductsValues_should_throwIllegalArgumentException() {
         BillGenerator billGenerator = new BillGenerator();
 
         Executable executable = () -> billGenerator.generate(null, promotions);
+
+        assertThrows(InvalidOperationException.class, executable);
+    }
+
+    @Test
+    public void when_generateWithEmptyProductsOrPromotions_should_throwIllegalArgumentException() {
+        List<Product> emptyProducts = new ArrayList<>();
+        List<Promotion> emptyPromotions = new ArrayList<>();
+        BillGenerator billGenerator = new BillGenerator();
+
+        Executable executable = () -> billGenerator.generate(emptyProducts, emptyPromotions);
 
         assertThrows(InvalidOperationException.class, executable);
     }
