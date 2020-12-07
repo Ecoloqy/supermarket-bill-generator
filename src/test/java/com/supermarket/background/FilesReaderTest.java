@@ -10,10 +10,7 @@ import org.junit.jupiter.api.function.Executable;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -41,16 +38,18 @@ public class FilesReaderTest {
             e.printStackTrace();
         }
         expectedPromotions = Arrays.asList(
-                new Promotion(0, 1001, 1, 1.20),
-                new Promotion(1, 1001, 2, 2.00),
-                new Promotion(2, 1244, 1, 0.20),
-                new Promotion(3, 1244, 10, 1.90),
-                new Promotion(4, 1016, 1, 2.20),
-                new Promotion(5, 1016, 2, 4.00)
+                new Promotion(0, 1001, "Beer", 1, 1.20),
+                new Promotion(1, 1001, "Beer", 2, 2.00),
+                new Promotion(2, 1244, "Egg", 1, 0.20),
+                new Promotion(3, 1244, "Egg", 10, 1.90),
+                new Promotion(4, 1016, "Milk", 1, 2.20),
+                new Promotion(5, 1016, "Milk", 2, 4.00)
         );
 
         List<Promotion> obtainedPromotions = filesReader.readPromotions(promotionsFile);
 
+        expectedPromotions.sort(Comparator.comparing(Promotion::hashCode));
+        obtainedPromotions.sort(Comparator.comparing(Promotion::hashCode));
         assertIterableEquals(expectedPromotions, obtainedPromotions);
     }
 
@@ -71,6 +70,8 @@ public class FilesReaderTest {
 
         List<Product> obtainedProducts = filesReader.readProducts(promotionsFile, productsFile);
 
+        expectedProducts.sort(Comparator.comparing(Product::hashCode));
+        obtainedProducts.sort(Comparator.comparing(Product::hashCode));
         assertIterableEquals(expectedProducts, obtainedProducts);
     }
 
