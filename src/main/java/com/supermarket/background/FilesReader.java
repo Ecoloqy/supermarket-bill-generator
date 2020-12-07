@@ -38,18 +38,22 @@ class PromotionReader {
         List<Promotion> promotions = new ArrayList<>();
         Path pathToFile = Paths.get(promotionsFile.getAbsolutePath());
         try (BufferedReader reader = Files.newBufferedReader(pathToFile, StandardCharsets.UTF_8)) {
-            String line = reader.readLine();
-            int id = 0;
-            while (line != null) {
-                String[] attributes = line.split(",");
-                Promotion promotion = createPromotion(id, attributes);
-                promotions.add(promotion);
-                line = reader.readLine();
-            }
+            handleLinesOfPromotionsFile(promotions, reader);
         } catch (IOException e) {
             throw new InvalidOperationException("File don't have next line!");
         }
         return promotions;
+    }
+
+    private void handleLinesOfPromotionsFile(List<Promotion> promotions, BufferedReader reader) throws IOException, InvalidOperationException {
+        String line = reader.readLine();
+        int id = 0;
+        while (line != null) {
+            String[] attributes = line.split(",");
+            Promotion promotion = createPromotion(id, attributes);
+            promotions.add(promotion);
+            line = reader.readLine();
+        }
     }
 
     private Promotion createPromotion(int id, String[] attributes) throws InvalidOperationException {
@@ -79,25 +83,32 @@ class ReceiptReader {
         Map<Integer, Integer> productsCounter = new HashMap<>();
         Path pathToFile = Paths.get(productsFile.getAbsolutePath());
         try (BufferedReader reader = Files.newBufferedReader(pathToFile, StandardCharsets.UTF_8)) {
-            String line = reader.readLine();
-            while (line != null) {
-                int barcode = 0;
-                try {
-                    barcode = Integer.parseInt(line);
-                } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-                    throw new InvalidOperationException("Invalid file format!", e);
-                }
+            handleLinesOfReceiptFile(productsCounter, reader);
+        } catch (IOException e) {
+            throw new InvalidOperationException("File don't have next line!");
+        }
+
+        return createProductsFromAlreadyCreatedMap(promotions, productsCounter);
+    }
+
+    private void handleLinesOfReceiptFile(Map<Integer, Integer> productsCounter, BufferedReader reader) throws IOException, InvalidOperationException {
+        String line = reader.readLine();
+        while (line != null) {
+            try {
+                int barcode = Integer.parseInt(line);
                 if (productsCounter.containsKey(barcode)) {
                     productsCounter.put(barcode, productsCounter.get(barcode) + 1);
                 } else {
                     productsCounter.put(barcode, 1);
                 }
                 line = reader.readLine();
+            } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
+                throw new InvalidOperationException("Invalid file format!", e);
             }
-        } catch (IOException e) {
-            throw new InvalidOperationException("File don't have next line!");
         }
+    }
 
+    private List<Product> createProductsFromAlreadyCreatedMap(List<Promotion> promotions, Map<Integer, Integer> productsCounter) throws InvalidOperationException {
         List<Product> products = new ArrayList<>();
         for (Map.Entry<Integer, Integer> entry : productsCounter.entrySet()) {
             Optional<Promotion> optionalPromotion =  promotions.stream()
@@ -109,7 +120,6 @@ class ReceiptReader {
             Promotion promotion = optionalPromotion.get();
             products.add(new Product(promotion.getBarcode(), promotion.getName(), entry.getValue()));
         }
-
         return products;
     }
 }

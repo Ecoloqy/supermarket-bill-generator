@@ -20,15 +20,20 @@ public class BillGenerator {
                     .sorted(Comparator.comparing(Promotion::getQuantity).reversed())
                     .collect(Collectors.toList());
 
-            while (product.getQuantity() != 0) {
-                Promotion promotion = getBestPromotionForProduct(product, promotionsOfThisProduct);
-                if (product.getQuantity() < 0) throw new InvalidOperationException("Promotion start from " + promotion.getQuantity() + " " + product.getName());
-                int oldQuantity = product.getQuantity();
-                product.setQuantity(oldQuantity - promotion.getQuantity());
-                result = result.add(promotion.getPrice());
-            }
+            result = updateResultForOneProduct(result, product, promotionsOfThisProduct);
         }
         return result.setScale(2, RoundingMode.CEILING);
+    }
+
+    private BigDecimal updateResultForOneProduct(BigDecimal result, Product product, List<Promotion> promotionsOfThisProduct) throws InvalidOperationException {
+        while (product.getQuantity() != 0) {
+            Promotion promotion = getBestPromotionForProduct(product, promotionsOfThisProduct);
+            if (product.getQuantity() < 0) throw new InvalidOperationException("Promotion start from " + promotion.getQuantity() + " " + product.getName());
+            int oldQuantity = product.getQuantity();
+            product.setQuantity(oldQuantity - promotion.getQuantity());
+            result = result.add(promotion.getPrice());
+        }
+        return result;
     }
 
     private Promotion getBestPromotionForProduct(Product product, List<Promotion> promotionsOfThisProduct) throws InvalidOperationException {
