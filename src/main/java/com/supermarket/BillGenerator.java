@@ -1,5 +1,10 @@
 package com.supermarket;
 
-public class BillGenerator {
+import java.math.BigDecimal;
+import java.util.List;
 
+public class BillGenerator {
+    public BigDecimal generate(List<Product> products, List<Promotion> promotions) {
+        return BigDecimal.ZERO;
+    }
 }
