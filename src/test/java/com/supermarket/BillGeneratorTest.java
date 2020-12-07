@@ -36,7 +36,7 @@ public class BillGeneratorTest {
     }
 
     @Test
-    public void when_generateWithValidValues_should_returnBigDecimalWithValidValue() {
+    public void when_generateWithValidValues_should_returnBigDecimalWithValidValue() throws InvalidOperationException {
         BillGenerator billGenerator = new BillGenerator();
         BigDecimal expectedResult = new BigDecimal("11.00");
 

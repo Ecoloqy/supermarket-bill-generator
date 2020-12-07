@@ -15,21 +15,19 @@ public class Main {
         String promotionsFilename = args.length == 2 ? args[0] : "products.csv";
         String receiptFilename = args.length == 2 ? args[0] : "receipt.csv";
 
+        BillGenerator billGenerator = new BillGenerator();
         FilesReader filesReader = new FilesReader();
-        List<Promotion> promotions = null;
-        List<Product> products = null;
 
         try {
             File promotionsFile = Paths.get(Objects.requireNonNull(Main.class.getClassLoader().getResource(promotionsFilename)).toURI()).toFile();
             File receiptFile = Paths.get(Objects.requireNonNull(Main.class.getClassLoader().getResource(receiptFilename)).toURI()).toFile();
-            promotions = filesReader.readPromotions(promotionsFile);
-            products = filesReader.readProducts(promotionsFile, receiptFile);
+            List<Promotion> promotions = filesReader.readPromotions(promotionsFile);
+            List<Product> products = filesReader.readProducts(promotionsFile, receiptFile);
+            BigDecimal result = billGenerator.generate(products, promotions);
+            System.out.println("The total cost of purchases: " + result.toString());
         } catch (InvalidOperationException | URISyntaxException e) {
             e.printStackTrace();
         }
 
-        BillGenerator billGenerator = new BillGenerator();
-        BigDecimal result = billGenerator.generate(products, promotions);
-        System.out.println("The total cost of purchases: " + result.toString());
     }
 }

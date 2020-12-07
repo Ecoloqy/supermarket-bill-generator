@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Product {
     private final int barcode;
     private final String name;
-    private final int quantity;
+    private int quantity;
 
     public Product(int barcode, String name, int quantity) {
         this.barcode = barcode;
@@ -23,6 +23,10 @@ public class Product {
 
     public int getQuantity() {
         return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     @Override
