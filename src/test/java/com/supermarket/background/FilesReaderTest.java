@@ -16,8 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FilesReaderTest {
-    private final PromotionReader promotionReader = new PromotionReader();
-    private final ReceiptReader receiptReader = new ReceiptReader();
+    private final FilesReader filesReader = new FilesReader();
     private static List<Promotion> expectedPromotions;
     private static List<Product> expectedProducts;
     private static File promotionsFile;
@@ -31,7 +30,6 @@ public class FilesReaderTest {
 
     @Test
     public void when_validFileIsProvided_should_returnValidListOfPromotions() throws InvalidOperationException {
-        FilesReader filesReader = new FilesReader(promotionReader, receiptReader);
         try {
             promotionsFile = Paths.get(Objects.requireNonNull(FilesReaderTest.class.getClassLoader().getResource("products_test.csv")).toURI()).toFile();
         } catch (URISyntaxException e) {
@@ -55,7 +53,6 @@ public class FilesReaderTest {
 
     @Test
     public void when_validFileIsProvided_should_returnValidListOfProducts() throws InvalidOperationException {
-        FilesReader filesReader = new FilesReader(promotionReader, receiptReader);
         try {
             promotionsFile = Paths.get(Objects.requireNonNull(FilesReaderTest.class.getClassLoader().getResource("products_test.csv")).toURI()).toFile();
             productsFile = Paths.get(Objects.requireNonNull(FilesReaderTest.class.getClassLoader().getResource("receipt_test.csv")).toURI()).toFile();
@@ -76,19 +73,42 @@ public class FilesReaderTest {
     }
 
     @Test
-    public void when_promotionsFileNotExist_should_returnIOException() {
-        FilesReader filesReader = new FilesReader(promotionReader, receiptReader);
-
+    public void when_promotionsFileNotExist_should_returnInvalidOperationException() {
         Executable executable = () -> filesReader.readPromotions(null);
 
         assertThrows(InvalidOperationException.class, executable);
     }
 
     @Test
-    public void when_productsFileNotExist_should_returnIOException() {
-        FilesReader filesReader = new FilesReader(promotionReader, receiptReader);
+    public void when_promotionsFileIsInInvalidFormat_should_returnInvalidOperationException() {
+        try {
+            promotionsFile = Paths.get(Objects.requireNonNull(FilesReaderTest.class.getClassLoader().getResource("products_invalid_test.csv")).toURI()).toFile();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
 
+        Executable executable = () -> filesReader.readPromotions(promotionsFile);
+
+        assertThrows(InvalidOperationException.class, executable);
+    }
+
+    @Test
+    public void when_productsFileNotExist_should_returnInvalidOperationException() {
         Executable executable = () -> filesReader.readProducts(promotionsFile, null);
+
+        assertThrows(InvalidOperationException.class, executable);
+    }
+
+    @Test
+    public void when_productsFileIsInInvalidFormat_should_returnInvalidOperationException() {
+        try {
+            promotionsFile = Paths.get(Objects.requireNonNull(FilesReaderTest.class.getClassLoader().getResource("products_test.csv")).toURI()).toFile();
+            productsFile = Paths.get(Objects.requireNonNull(FilesReaderTest.class.getClassLoader().getResource("receipt_invalid_test.csv")).toURI()).toFile();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        Executable executable = () -> filesReader.readProducts(promotionsFile, productsFile);
 
         assertThrows(InvalidOperationException.class, executable);
     }
