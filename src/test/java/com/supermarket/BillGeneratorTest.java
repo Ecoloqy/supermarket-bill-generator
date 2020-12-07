@@ -2,7 +2,6 @@ package com.supermarket;
 
 import com.supermarket.handlers.InvalidOperationException;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.function.Executable;
 
 import java.math.BigDecimal;
@@ -10,30 +9,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BillGeneratorTest {
 
-    private static List<Product> products;
-    private static List<Promotion> promotions;
+    private List<Product> products = Arrays.asList(
+            new Product(1001, "Beer", 3),
+            new Product(1244, "Egg", 8),
+            new Product(1016, "Milk", 3)
+    );
 
-    @BeforeEach
-    public void init() {
-        products = Arrays.asList(
-                new Product(1001, "Beer", 3),
-                new Product(1244, "Egg", 8),
-                new Product(1016, "Milk", 3)
-        );
-
-        promotions = Arrays.asList(
-                new Promotion(0, 1001, "Beer", 1, 1.20),
-                new Promotion(1, 1001, "Beer",2, 2.00),
-                new Promotion(2, 1244, "Egg", 1, 0.20),
-                new Promotion(3, 1244, "Egg", 10, 1.90),
-                new Promotion(4, 1016, "Milk", 1, 2.20),
-                new Promotion(5, 1016, "Milk", 2, 4.00)
-        );
-    }
+    private List<Promotion> promotions = Arrays.asList(
+            new Promotion(0, 1001, "Beer", 1, 1.20),
+            new Promotion(1, 1001, "Beer", 2, 2.00),
+            new Promotion(2, 1244, "Egg", 1, 0.20),
+            new Promotion(3, 1244, "Egg", 10, 1.90),
+            new Promotion(4, 1016, "Milk", 1, 2.20),
+            new Promotion(5, 1016, "Milk", 2, 4.00)
+    );
 
     @Test
     public void when_generateWithValidValues_should_returnBigDecimalWithValidValue() throws InvalidOperationException {
