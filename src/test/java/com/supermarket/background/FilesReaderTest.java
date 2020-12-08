@@ -3,7 +3,7 @@ package com.supermarket.background;
 import com.supermarket.models.Product;
 import com.supermarket.models.Promotion;
 import com.supermarket.handlers.InvalidOperationException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.function.Executable;
 
@@ -24,13 +24,6 @@ public class FilesReaderTest {
 
     @BeforeEach
     public void beforeEach() {
-        expectedPromotions = new ArrayList<>();
-        expectedProducts = new ArrayList<>();
-    }
-
-    @Test
-    public void when_validFileIsProvided_should_returnValidListOfPromotions() throws InvalidOperationException, URISyntaxException {
-        promotionsFile = Paths.get(Objects.requireNonNull(FilesReaderTest.class.getClassLoader().getResource("products_test.csv")).toURI()).toFile();
         expectedPromotions = Arrays.asList(
                 new Promotion(0, 1001, "Beer", 1, 1.20),
                 new Promotion(1, 1001, "Beer", 2, 2.00),
@@ -39,6 +32,17 @@ public class FilesReaderTest {
                 new Promotion(4, 1016, "Milk", 1, 2.20),
                 new Promotion(5, 1016, "Milk", 2, 4.00)
         );
+
+        expectedProducts = Arrays.asList(
+                new Product(1001, "Beer", 3),
+                new Product(1244, "Egg", 8),
+                new Product(1016, "Milk", 3)
+        );
+    }
+
+    @Test
+    public void when_validFileIsProvided_should_returnValidListOfPromotions() throws InvalidOperationException, URISyntaxException {
+        promotionsFile = Paths.get(Objects.requireNonNull(FilesReaderTest.class.getClassLoader().getResource("products_test.csv")).toURI()).toFile();
 
         List<Promotion> obtainedPromotions = filesReader.readPromotions(promotionsFile);
 
@@ -51,11 +55,6 @@ public class FilesReaderTest {
     public void when_validFileIsProvided_should_returnValidListOfProducts() throws InvalidOperationException, URISyntaxException {
         promotionsFile = Paths.get(Objects.requireNonNull(FilesReaderTest.class.getClassLoader().getResource("products_test.csv")).toURI()).toFile();
         productsFile = Paths.get(Objects.requireNonNull(FilesReaderTest.class.getClassLoader().getResource("receipt_test.csv")).toURI()).toFile();
-        expectedProducts = Arrays.asList(
-                new Product(1001, "Beer", 3),
-                new Product(1244, "Egg", 8),
-                new Product(1016, "Milk", 3)
-        );
 
         List<Product> obtainedProducts = filesReader.readProducts(promotionsFile, productsFile);
 
