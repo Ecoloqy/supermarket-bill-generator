@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Main {
-    public static void main(String[] args) throws InvalidOperationException {
+    public static void main(String[] args) {
         String promotionsFilename = args.length == 2 ? args[0] : "products.csv";
         String receiptFilename = args.length == 2 ? args[0] : "receipt.csv";
 
