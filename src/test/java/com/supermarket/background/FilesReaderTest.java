@@ -42,7 +42,7 @@ public class FilesReaderTest {
 
     @Test
     public void when_validFileIsProvided_should_returnValidListOfPromotions() throws InvalidOperationException, URISyntaxException {
-        promotionsFile = Paths.get(Objects.requireNonNull(FilesReaderTest.class.getClassLoader().getResource("products_test.csv")).toURI()).toFile();
+        promotionsFile = getResourcePath("products_test.csv");
 
         List<Promotion> obtainedPromotions = filesReader.readPromotions(promotionsFile);
 
@@ -53,8 +53,8 @@ public class FilesReaderTest {
 
     @Test
     public void when_validFileIsProvided_should_returnValidListOfProducts() throws InvalidOperationException, URISyntaxException {
-        promotionsFile = Paths.get(Objects.requireNonNull(FilesReaderTest.class.getClassLoader().getResource("products_test.csv")).toURI()).toFile();
-        productsFile = Paths.get(Objects.requireNonNull(FilesReaderTest.class.getClassLoader().getResource("receipt_test.csv")).toURI()).toFile();
+        promotionsFile = getResourcePath("products_test.csv");
+        productsFile = getResourcePath("receipt_test.csv");
 
         List<Product> obtainedProducts = filesReader.readProducts(promotionsFile, productsFile);
 
@@ -72,7 +72,7 @@ public class FilesReaderTest {
 
     @Test
     public void when_promotionsFileIsInInvalidFormat_should_returnInvalidOperationException() throws URISyntaxException {
-        promotionsFile = Paths.get(Objects.requireNonNull(FilesReaderTest.class.getClassLoader().getResource("products_invalid_test.csv")).toURI()).toFile();
+        promotionsFile = getResourcePath("products_invalid_test.csv");
 
         Executable executable = () -> filesReader.readPromotions(promotionsFile);
 
@@ -88,11 +88,15 @@ public class FilesReaderTest {
 
     @Test
     public void when_productsFileIsInInvalidFormat_should_returnInvalidOperationException() throws URISyntaxException {
-        promotionsFile = Paths.get(Objects.requireNonNull(FilesReaderTest.class.getClassLoader().getResource("products_test.csv")).toURI()).toFile();
-        productsFile = Paths.get(Objects.requireNonNull(FilesReaderTest.class.getClassLoader().getResource("receipt_invalid_test.csv")).toURI()).toFile();
+        promotionsFile = getResourcePath("products_test.csv");
+        productsFile = getResourcePath("receipt_invalid_test.csv");
 
         Executable executable = () -> filesReader.readProducts(promotionsFile, productsFile);
 
         assertThrows(InvalidOperationException.class, executable);
+    }
+
+    private File getResourcePath(String s) throws URISyntaxException {
+        return Paths.get(Objects.requireNonNull(FilesReaderTest.class.getClassLoader().getResource(s)).toURI()).toFile();
     }
 }
